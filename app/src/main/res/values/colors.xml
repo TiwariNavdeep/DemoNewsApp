@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#2196F3</color>
+    <color name="primaryDark">#1976D2</color>
+    <color name="ctaColor">#4CAF50</color>
+    <color name="errorColor">#F44336</color>
+    <color name="textPrimary">#3D5AFE</color>
+    <color name="textSecondary">#757575</color>
+    <color name="gray_text">#757575</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="red">#B71C1C</color>
+    <color name="green">#5DE469</color>
+    <color name="surface">#F5F7FA</color>
+</resources>
