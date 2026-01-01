@@ -43,7 +43,7 @@ private val LightAppColors = AppColors(
     container = Color(0xFFF1F3F4),
 
     // Text
-    textPrimary = Color(0xFF1C1B1F),
+    textPrimary = Color(0xFF1B1A1E),
     textSecondary = Color(0xFF6B6B6B),
     selectedText = Color(0xFF1565C0),
     unSelectedText = Color(0xFF9E9E9E),
@@ -62,7 +62,7 @@ val LocalAppColors = compositionLocalOf<AppColors> {
 
 @Composable
 fun MyApplicationDemoTheme(
-    darkTheme: Boolean = true,
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colors = if (darkTheme) DarkAppColors else LightAppColors

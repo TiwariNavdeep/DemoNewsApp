@@ -1,7 +1,5 @@
 package com.example.demosample.presentation.component.news_feed
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,9 +25,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -49,7 +45,7 @@ import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.demosample.domain.model.NewsModel
-import com.example.demosample.presentation.component.common.ErrorView
+import com.example.demosample.presentation.component.common.LoadMoreErrorView
 import com.example.demosample.presentation.component.common.NoMoreData
 import com.example.demosample.presentation.component.common.PaginationLoader
 import com.example.demosample.presentation.theme.AppTypography
@@ -98,58 +94,9 @@ fun NewsList(
                 }
             }
 
-            // --- Loading View ---
-            if (newsPagingItems.loadState.refresh is LoadState.Loading && newsPagingItems.itemCount > 0) {
-                item { PaginationLoader() }
+            item {
+                NewsFeedErrorViews(newsPagingItems)
             }
-            // --- CASE 4: End of Data ---
-            if (newsPagingItems.loadState.append.endOfPaginationReached && newsPagingItems.itemCount > 0) {
-                // Optional: Small "No more news" tag at bottom
-                item { NoMoreData("Fetch all news!!") }
-            }
-            if (newsPagingItems.loadState.append is LoadState.Error && newsPagingItems.itemCount > 0) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(LocalAppColors.current.background)
-                            .padding(16.dp)
-                    ){
-                        Text(
-                            text = "Error while loading more news!!",
-                            color = LocalAppColors.current.error,
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-//not used
-@Composable
-fun NewsListUI(
-    newsPagingItems: LazyPagingItems<NewsModel>,
-    loadMore: () -> Unit = {},
-    onNewsClick: (NewsModel) -> Unit = {}
-) {
-
-    val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { newsPagingItems.itemCount }
-    )
-
-    // 🔥 Pagination trigger
-    // 1️⃣ MAIN CONTENT
-    VerticalPager(
-        state = pagerState,
-        modifier = Modifier.fillMaxSize()
-    ) { page ->
-        newsPagingItems[page]?.let { item ->
-            NewsCard(
-                news = item,
-                onClick = { onNewsClick(item) }
-            )
         }
     }
 }
@@ -228,7 +175,7 @@ fun NewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                 Row {
                     Text(
                         text = news.publishedAt+" | ",
-                        style = AppTypography.Typography.labelMedium12,
+                        style = AppTypography.Typography.labelRegular12,
                         color = LocalAppColors.current.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -261,12 +208,12 @@ fun NewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                     .padding(horizontal = 16.dp, vertical = 16.dp)
             ) {
                 Text(
-                    text = "Tap To Read More.",
+                    text = "Tap here to read more.",
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = Color.Blue.copy(alpha = 0.7f),
                         fontWeight = FontWeight.Medium
                     ),
-                    color = Color.White,
+                    color = LocalAppColors.current.textPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -342,7 +289,7 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                 Row {
                     Text(
                         text = news.publishedAt+" | ",
-                        style = AppTypography.Typography.labelMedium12,
+                        style = AppTypography.Typography.labelRegular12,
                         color = LocalAppColors.current.textSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis

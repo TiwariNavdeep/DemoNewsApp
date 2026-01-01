@@ -1,5 +1,9 @@
 [versions]
+accompanistSystemuicontroller = "0.34.0"
 agp = "8.6.0"
+converterGson = "2.9.0"
+hiltAndroid = "2.48"
+hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
 coreKtx ="1.15.0"
 junit = "4.13.2"
@@ -11,10 +15,19 @@ composeBom = "2024.04.01"
 navigationCompose = "2.8.5"
 hilt = "2.48"
 appcompat = "1.7.1"
+pagingCompose = "3.3.2"
+roomPaging = "2.6.1"
 uiTooling = "1.10.0"
+material3 = "1.4.0"
 
 [libraries]
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomPaging" }
+androidx-room-paging = { module = "androidx.room:room-paging", version.ref = "roomPaging" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -29,6 +42,9 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.5.0" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "converterGson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

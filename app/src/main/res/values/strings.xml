@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Demo NewsApp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_internet_msg">"It looks like you're not connected to the internet. We'll show you the latest saved news, but new stories won't load until you're back online." </string>
+    <string name="no_data_msg">"No news articles were found in this category. Try searching for something else or check back later." </string>
+    <string name="no_internet_available">Network not available!!</string>
 
 </resources>

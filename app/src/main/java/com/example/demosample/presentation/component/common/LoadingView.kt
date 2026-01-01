@@ -44,6 +44,24 @@ fun ErrorView(message: String) {
 }
 
 @Composable
+fun LoadMoreErrorView(message: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(LocalAppColors.current.background)
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = message,
+            textAlign = TextAlign.Center,
+            color = LocalAppColors.current.textSecondary,
+            style = AppTypography.Typography.labelRegular12,
+            modifier = Modifier.padding(horizontal = 16.dp))
+    }
+}
+
+@Composable
 fun PaginationLoader() {
     Box(
         modifier = Modifier

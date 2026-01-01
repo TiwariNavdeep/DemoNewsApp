@@ -29,7 +29,6 @@ import javax.inject.Inject
         .debounce(500)
         .distinctUntilChanged()
         .flatMapLatest { q ->
-            Log.d("searchResult","q "+q)
             searchNewsUseCase(q)
         }
         .cachedIn(viewModelScope)

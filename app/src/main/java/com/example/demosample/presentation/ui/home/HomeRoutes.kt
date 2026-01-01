@@ -1,6 +1,8 @@
 package com.example.demosample.presentation.ui.home
 
+import android.app.Activity
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,23 +16,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.demo.news.R
 import com.example.demosample.domain.enums.NewsCategory
 import com.example.demosample.domain.model.NewsModel
 import com.example.demosample.presentation.component.common.ErrorView
@@ -44,6 +51,7 @@ import com.example.demosample.presentation.theme.AppTypography.labelRegular12
 import com.example.demosample.presentation.theme.LocalAppColors
 import com.example.demosample.presentation.viewModel.HomeViewModel
 import com.example.demosample.utils.constant.AppConstant
+import com.example.demosample.utils.extensions.showToast
 import kotlinx.coroutines.launch
 
 
@@ -53,7 +61,20 @@ fun HomeRoutes(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val context = LocalContext.current
     val isNetWorkAvailable by viewModel.isOnline.collectAsState()
+    var lastBackPressTime by remember { mutableLongStateOf(0L) }
+
+    BackHandler {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastBackPressTime < 1500) {
+            (context as? Activity)?.finish()
+        } else {
+            // Show the toast and update the timestamp
+            Toast.makeText(context, "Press again to exit", Toast.LENGTH_SHORT).show()
+            lastBackPressTime = currentTime
+        }
+    }
 
     Scaffold { innerPadding ->
         val context = LocalContext.current
@@ -65,7 +86,6 @@ fun HomeRoutes(
             ?.getStateFlow("category", "general")
             ?.collectAsState()
             ?: remember { mutableStateOf("general") }
-
 
         val pagerState = rememberPagerState(initialPage = 0) {
             AppConstant.newsCategories.size
@@ -103,12 +123,12 @@ fun HomeRoutes(
                         category,
                         viewModel,
                         onNewsClick = {
-                            if(isNetWorkAvailable){
+                            if (isNetWorkAvailable) {
                                 navController.navigate(
                                     NavGraphScreens.WebView.createRoute(it.url)
                                 )
-                            }else{
-                                Toast.makeText(context,"Network not available!!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                context.showToast("Network not available!!")
                             }
                         })
                 }
@@ -127,7 +147,6 @@ fun HomeRoutes(
         }
     }
 }
-
 
 @Composable
 fun NewsCategoryHome(
@@ -185,34 +204,45 @@ fun NewsListForCategoryHome(
 
     val newsPagingItems: LazyPagingItems<NewsModel> =
         viewModel.homeUIState.collectAsLazyPagingItems()
+
     LaunchedEffect(category) {
         viewModel.getNews(category)
     }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        NewsList(
-            newsPagingItems = newsPagingItems,
-            onNewsClick = onNewsClick
-        )
-        newsPagingItems.apply {
-            // --- CASE 1: Full Screen Error (No Internet + No Cache) ---
-            if (loadState.refresh is LoadState.Error && itemCount == 0) {
-                val error =
-                    (loadState.refresh as LoadState.Error).error
 
-                ErrorView(
-                    if(isNetWorkAvailable)
-                        error.message?: "No news articles were found in this category. Try searching for something else or check back later."
+    PullToRefreshBox(
+        isRefreshing = (newsPagingItems.loadState.refresh is LoadState.Loading && newsPagingItems.itemCount==0),
+        onRefresh = {
+            newsPagingItems.refresh()
+        }
+    ){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            NewsList(
+                newsPagingItems = newsPagingItems,
+                onNewsClick = onNewsClick
+            )
 
-                    else{
-                        "It looks like you're not connected to the internet. We'll show you the latest saved news, but new stories won't load until you're back online."                    }
-                )
-            }
-            // --- Loading View ---
-            if (loadState.refresh is LoadState.Loading && itemCount == 0) {
-                LoadingView()
+            newsPagingItems.apply {
+                /*
+                * first time if any error get from api
+                * then show error*/
+                if (loadState.refresh is LoadState.Error && itemCount == 0) {
+                    val error =
+                        (loadState.refresh as LoadState.Error).error
+                    ErrorView(
+                        if (isNetWorkAvailable)
+                            error.message ?: stringResource(R.string.no_data_msg)
+                        else
+                            stringResource(R.string.no_internet_msg)
+                    )
+                }
+                /*
+                * load news or refresh*/
+                if (loadState.refresh is LoadState.Loading && itemCount == 0) {
+                    LoadingView()
+                }
             }
         }
     }

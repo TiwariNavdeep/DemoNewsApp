@@ -1,18 +1,9 @@
 package com.example.demosample.presentation.ui.webview
 
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.navigation.NavController
-import com.example.demosample.presentation.navigation.NavGraphScreens
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,17 +11,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.demo.news.R
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.navigation.NavController
 import com.example.demosample.presentation.theme.LocalAppColors
 
 @Composable
@@ -38,7 +30,13 @@ fun WebviewRoutes(
     navController: NavController,
     url: String
 ) {
-    WebViewScreen(navController,url)
+    Scaffold {
+        Box(
+            modifier = Modifier.padding(it)
+        ) {
+            WebViewScreen(navController,url)
+        }
+    }
 }
 
 @Composable
@@ -59,12 +57,11 @@ fun WebViewScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(LocalAppColors.current.background)
-            .padding(top = 24.dp)
     ) {
         Box(
             modifier = Modifier.fillMaxWidth()
                 .background(LocalAppColors.current.container)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(horizontal = 16.dp)
         ){
             IconButton(onClick = {
                 navController.popBackStack()
@@ -72,8 +69,8 @@ fun WebViewScreen(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
             ) {
-                androidx.compose.material3.Icon(
-                    imageVector = Icons.Default.Close,
+                Icon(
+                    painter = painterResource(R.drawable.icon_clear_24),
                     contentDescription = "Clear",
                     tint = LocalAppColors.current.textPrimary
                 )
@@ -118,8 +115,6 @@ fun WebViewScreen(
                     }
                 },
                 update = {
-                    // This handles URL changes if the 'url' parameter updates
-                    // But we don't want to re-load if it's the same URL
                     if (it.url != url) {
                         it.loadUrl(url)
                     }
