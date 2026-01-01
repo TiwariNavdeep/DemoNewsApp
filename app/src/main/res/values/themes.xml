@@ -1,21 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.DemoSample" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/white</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-    </style>
+    <style name="Theme.MyApplicationDemo" parent="android:Theme.Material.Light.NoActionBar" />
 
-    <style name="Theme.DemoSample" parent="Base.Theme.DemoSample" />
+    <style name="Theme.DemoSample" parent="Theme.MyApplicationDemo" />
 
-
-
-
-
-    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
 </resources>

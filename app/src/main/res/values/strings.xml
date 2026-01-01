@@ -1,10 +1,5 @@
 <resources>
-    <string name="app_name">Match Mate</string>
+    <string name="app_name">Demo NewsApp</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="myChoices">My Choices</string>
-    <string name="allMatches">All Matches</string>
-    <string name="accepted">Accepted</string>
-    <string name="rejected">Rejected</string>
-    <string name="no_data_available_my_choice">No data available yet, go to \'All Matches\' Accept or Decline user\'s request.</string>
 
 </resources>
