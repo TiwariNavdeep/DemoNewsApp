@@ -90,7 +90,7 @@ fun NewsList(
                         .fillParentMaxHeight()
                         .fillMaxWidth()
                 ) {
-                    NewsCard(news,onNewsClick)
+                    NewsCard(news, onNewsClick)
                 }
             }
 
@@ -174,7 +174,7 @@ fun NewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
 
                 Row {
                     Text(
-                        text = news.publishedAt+" | ",
+                        text = news.publishedAt + " | ",
                         style = AppTypography.Typography.labelRegular12,
                         color = LocalAppColors.current.textSecondary,
                         maxLines = 1,
@@ -223,7 +223,6 @@ fun NewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
 }
 
 
-
 @Composable
 fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
     Card(
@@ -240,10 +239,10 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                 .background(LocalAppColors.current.container)
         ) {
 
-            Box (
+            Box(
                 modifier = Modifier
                     .width(100.dp)
-            ){
+            ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(news.imgUrl)
@@ -253,7 +252,7 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .width(100.dp)
-                        .align (Alignment.Center)
+                        .align(Alignment.Center)
                         .clip(RoundedCornerShape(8.dp)),
                     contentScale = ContentScale.Fit
                 )
@@ -288,7 +287,7 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
 
                 Row {
                     Text(
-                        text = news.publishedAt+" | ",
+                        text = news.publishedAt + " | ",
                         style = AppTypography.Typography.labelRegular12,
                         color = LocalAppColors.current.textSecondary,
                         maxLines = 1,
