@@ -1,0 +1,2 @@
+# DemoNewsApp
+Simple news App
