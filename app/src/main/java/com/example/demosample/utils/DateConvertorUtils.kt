@@ -15,7 +15,7 @@ object DateConvertorUtils {
             }
 
             // 2. Output Format (Jo aapko chahiye)
-            val outputFormat = SimpleDateFormat("dd:MMM:yyyy HH:mm:ss", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("dd/MMM/yyyy hh:mm a", Locale.getDefault())
 
             val date = inputFormat.parse(inputDate)
             if (date != null) {

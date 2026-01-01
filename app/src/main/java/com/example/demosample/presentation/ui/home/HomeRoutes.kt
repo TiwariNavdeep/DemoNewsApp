@@ -199,12 +199,15 @@ fun NewsListForCategoryHome(
         newsPagingItems.apply {
             // --- CASE 1: Full Screen Error (No Internet + No Cache) ---
             if (loadState.refresh is LoadState.Error && itemCount == 0) {
+                val error =
+                    (loadState.refresh as LoadState.Error).error
+
                 ErrorView(
                     if(isNetWorkAvailable)
-                        "No news articles were found in this category. Try searching for something else or check back later."
+                        error.message?: "No news articles were found in this category. Try searching for something else or check back later."
+
                     else{
-                        "It looks like you're not connected to the internet. We'll show you the latest saved news, but new stories won't load until you're back online."
-                    }
+                        "It looks like you're not connected to the internet. We'll show you the latest saved news, but new stories won't load until you're back online."                    }
                 )
             }
             // --- Loading View ---

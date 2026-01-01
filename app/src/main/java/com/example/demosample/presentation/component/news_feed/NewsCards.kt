@@ -225,13 +225,24 @@ fun NewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = news.sourceName,
-                    style = AppTypography.Typography.labelMedium12,
-                    color = Color.Blue,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row {
+                    Text(
+                        text = news.publishedAt+" | ",
+                        style = AppTypography.Typography.labelMedium12,
+                        color = LocalAppColors.current.textSecondary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Text(
+                        text = news.sourceName,
+                        style = AppTypography.Typography.labelMedium12,
+                        color = Color.Blue.copy(.7f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(26.dp))
 
             }
@@ -340,7 +351,7 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
                     Text(
                         text = news.sourceName,
                         style = AppTypography.Typography.labelMedium12,
-                        color = Color.Blue.copy(.7f),
+                        color = LocalAppColors.current.primary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
