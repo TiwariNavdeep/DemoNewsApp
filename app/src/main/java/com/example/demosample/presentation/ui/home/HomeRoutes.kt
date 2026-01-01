@@ -1,5 +1,6 @@
 package com.example.demosample.presentation.ui.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,8 +53,10 @@ fun HomeRoutes(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val isNetWorkAvailable by viewModel.isOnline.collectAsState()
+
     Scaffold { innerPadding ->
-        LocalContext.current
+        val context = LocalContext.current
 
         val savedStateHandle =
             navController.currentBackStackEntry?.savedStateHandle
@@ -74,14 +77,16 @@ fun HomeRoutes(
                 .padding(innerPadding)
                 .background(LocalAppColors.current.background)
         ) {
-            HomeTopBar(onSearchClick = {
-                val category = AppConstant.newsCategories[pagerState.currentPage]
-                navController.currentBackStackEntry?.savedStateHandle
-                    ?.set("category", category.value)
-                navController.navigate(
-                    NavGraphScreens.Search.route
-                )
-            })
+            HomeTopBar(
+                isNetWorkAvailable,
+                onSearchClick = {
+                    val category = AppConstant.newsCategories[pagerState.currentPage]
+                    navController.currentBackStackEntry?.savedStateHandle
+                        ?.set("category", category.value)
+                    navController.navigate(
+                        NavGraphScreens.Search.route
+                    )
+                })
 
             NewsCategoryHome(pagerState)
 
@@ -98,9 +103,13 @@ fun HomeRoutes(
                         category,
                         viewModel,
                         onNewsClick = {
-                            navController.navigate(
-                                NavGraphScreens.WebView.createRoute(it.url)
-                            )
+                            if(isNetWorkAvailable){
+                                navController.navigate(
+                                    NavGraphScreens.WebView.createRoute(it.url)
+                                )
+                            }else{
+                                Toast.makeText(context,"Network not available!!", Toast.LENGTH_SHORT).show()
+                            }
                         })
                 }
             }
@@ -172,6 +181,8 @@ fun NewsListForCategoryHome(
     viewModel: HomeViewModel,
     onNewsClick: (NewsModel) -> Unit
 ) {
+    val isNetWorkAvailable by viewModel.isOnline.collectAsState()
+
     val newsPagingItems: LazyPagingItems<NewsModel> =
         viewModel.homeUIState.collectAsLazyPagingItems()
     LaunchedEffect(category) {
@@ -188,7 +199,13 @@ fun NewsListForCategoryHome(
         newsPagingItems.apply {
             // --- CASE 1: Full Screen Error (No Internet + No Cache) ---
             if (loadState.refresh is LoadState.Error && itemCount == 0) {
-                ErrorView("No news found!!")
+                ErrorView(
+                    if(isNetWorkAvailable)
+                        "No news articles were found in this category. Try searching for something else or check back later."
+                    else{
+                        "It looks like you're not connected to the internet. We'll show you the latest saved news, but new stories won't load until you're back online."
+                    }
+                )
             }
             // --- Loading View ---
             if (loadState.refresh is LoadState.Loading && itemCount == 0) {

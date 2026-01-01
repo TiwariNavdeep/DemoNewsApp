@@ -7,6 +7,7 @@ import com.example.demosample.data.datasource.remote.ApiService
 import com.example.demosample.data.repository.NewsRepoImpl
 import com.example.demosample.domain.useCase.GetNewsUseCase
 import com.example.demosample.utils.constant.AppConstant
+import com.example.demosample.utils.network.NetworkObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,5 +51,16 @@ object AppModule {
             "com.demo.news"
         )
         return room.build()
+    }
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object NetworkModule {
+
+        @Provides
+        @Singleton
+        fun provideNetworkObserver(@ApplicationContext context: Context): NetworkObserver {
+            return NetworkObserver(context)
+        }
     }
 }
