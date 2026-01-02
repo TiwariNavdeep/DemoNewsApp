@@ -51,7 +51,7 @@ fun HomeTopBar(
             ),
             color = LocalAppColors.current.textPrimary,
             modifier = Modifier
-                .align(Alignment.Center)
+                .align(Alignment.CenterStart)
         )
 
         if(isNetWorkAvailable){

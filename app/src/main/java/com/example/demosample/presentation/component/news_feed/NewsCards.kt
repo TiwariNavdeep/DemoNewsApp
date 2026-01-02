@@ -287,14 +287,6 @@ fun SearchNewsCard(news: NewsModel, onClick: (NewsModel) -> Unit) {
 
                 Row {
                     Text(
-                        text = news.publishedAt + " | ",
-                        style = AppTypography.Typography.labelRegular12,
-                        color = LocalAppColors.current.textSecondary,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-
-                    Text(
                         text = news.sourceName,
                         style = AppTypography.Typography.labelMedium12,
                         color = LocalAppColors.current.primary,

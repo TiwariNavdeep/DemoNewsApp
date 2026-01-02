@@ -16,7 +16,7 @@ data class NewsModelDto(
     @SerializedName("description")
     val description: String,
     @SerializedName("urlToImage")
-    val imageUrl: String,
+    val imageUrl: String?,
     @SerializedName("publishedAt")
     val publishedAt: String,
     )
